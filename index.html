@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Online Modern</title>
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Menghubungkan ke file CSS eksternal -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100">
+
+
+    <!-- Header -->
+        <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4">
+            <!-- Top Header -->
+            <div class="flex justify-between items-center mb-4">
+                <h1 class="text-2xl font-bold text-gray-800">BOIBOI Marketplace</h1>
+                <div class="relative">
+                    <i class="fas fa-shopping-cart text-gray-600 text-2xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="relative mb-4">
+                <div class="flex">
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        placeholder="Cari produk..." 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                    <button 
+                        id="search-btn" 
+                        class="bg-blue-600 text-white px-6 py-2 rounded-r-lg hover:bg-blue-700 transition-colors"
+                    >
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="overflow-x-auto">
+                <div id="categories-container" class="flex space-x-2 pb-2">
+                    <!-- Kategori akan dimuat oleh JavaScript -->
+                    <button class="category-btn px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium whitespace-nowrap">
+                        All Products
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 md:p-8">
+        <!-- Loader -->
+        <div id="loader" class="text-center py-10">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
+            <p class="mt-2 text-gray-600">Memuat produk...</p>
+        </div>
+
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Kartu produk akan dimasukkan di sini oleh JavaScript -->
+        </div>
+
+
+        <!-- Error Message -->
+        <div id="error-message" class="hidden text-center bg-red-100 text-red-700 p-4 rounded-lg">
+            <p>Gagal memuat produk. Silakan coba lagi nanti.</p>
+        </div>
+    </main>
+
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="p-4 sm:p-6">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-center pb-3 border-b">
+                    <h3 class="text-xl font-semibold text-gray-900" id="modal-title">Detail Produk</h3>
+                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times fa-lg"></i>
+                    </button>
+                </div>
+                <!-- Modal Body -->
+                <div class="mt-4 md:flex md:space-x-6">
+                    <div class="md:w-1/2 flex-shrink-0">
+                        <img id="modal-image" src="https://placehold.co/400x400" alt="Product Image" class="w-full h-auto object-contain rounded-lg max-h-80">
+                    </div>
+                    <div class="mt-4 md:mt-0 md:w-1/2">
+                        <span id="modal-category" class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Kategori</span>
+                        <h4 class="text-2xl font-bold text-gray-800 my-2" id="modal-product-name">Nama Produk</h4>
+                        <p class="text-3xl font-light text-blue-600 mb-4" id="modal-price">Rp 0</p>
+                        <p class="text-gray-600 text-sm leading-relaxed" id="modal-description">Deskripsi produk akan muncul di sini.</p>
+                        <button id="modal-add-to-cart" class="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-cart-plus"></i>
+                            <span>Tambah ke Keranjang</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50"></div>
+    <!-- WhatsApp Notification Modal -->
+<div id="whatsappModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="p-6">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-xl font-semibold text-gray-900">Bagikan via WhatsApp</h3>
+                <button id="closeWhatsappModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="mt-4">
+                <p class="text-gray-600 mb-4">Pilih opsi untuk berbagi keranjang belanja:</p>
+                
+                <div class="space-y-3">
+                    <button id="whatsapp-cart-summary" class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center space-x-2">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Kirim Ringkasan Keranjang</span>
+                    </button>
+                    
+                    <button id="whatsapp-single-product" class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center space-x-2">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Bagikan Produk Ini</span>
+                    </button>
+                </div>
+                
+                <div class="mt-4 p-3 bg-gray-100 rounded-lg">
+                    <p class="text-sm text-gray-600">Nomor WhatsApp Tujuan:</p>
+                    <input type="text" id="whatsapp-number" placeholder="Contoh: 6281234567890" class="w-full mt-1 p-2 border border-gray-300 rounded text-sm" value="6281234567890">
+                    <p class="text-xs text-gray-500 mt-1">*Format: kode negara + nomor (tanpa + dan spasi)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart Detail Modal -->
+<div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-xl font-semibold text-gray-900">Detail Keranjang Belanja</h3>
+                <button id="closeCartModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Cart Content -->
+            <div id="cart-content" class="mt-4">
+                <!-- Empty Cart State -->
+                <div id="empty-cart-message" class="text-center py-8">
+                    <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Keranjang belanja Anda masih kosong</p>
+                    <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Mulai Belanja
+                    </button>
+                </div>
+
+                <!-- Cart Items -->
+                <div id="cart-items" class="hidden">
+                    <div class="space-y-4">
+                        <!-- Cart items will be inserted here -->
+                    </div>
+                    
+                    <!-- Cart Summary -->
+                    <div id="cart-summary" class="mt-6 pt-4 border-t border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">Total Item:</span>
+                            <span id="cart-total-items" class="font-semibold">0</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">Subtotal:</span>
+                            <span id="cart-subtotal" class="font-semibold">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-gray-600">Total Harga:</span>
+                            <span id="cart-total-price" class="text-xl font-bold text-blue-600">Rp 0</span>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex space-x-3">
+                            <button id="clear-cart-btn" class="flex-1 bg-red-100 text-red-700 py-3 rounded-lg font-semibold hover:bg-red-200 transition-colors flex items-center justify-center space-x-2">
+                                <i class="fas fa-trash"></i>
+                                <span>Kosongkan Keranjang</span>
+                            </button>
+                            <button id="whatsapp-cart-btn" class="flex-1 bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center space-x-2">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>Share via WhatsApp</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Simple Footer with Basic Info -->
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <!-- Logo and Copyright -->
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-lg font-bold">BOIBOI Marketplace</h3>
+                    <p class="text-gray-300 text-sm mt-1">
+                        &copy; 2024 All rights reserved
+                    </p>
+                </div>
+                
+                <!-- Simple Links -->
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">
+                        Contact
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors text-sm">
+                        Privacy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Menghubungkan ke file JavaScript eksternal (defer memastikan HTML dimuat lebih dulu) -->
+    <script src="script.js" defer></script>
+</body>
+</html>
