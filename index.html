@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Online Modern</title>
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Menghubungkan ke file CSS eksternal -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100">
+
+
+    <header class="bg-white shadow-md sticky top-0 z-40">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-bold text-gray-800">BOIBOI Marketplace</h1>
+            <div class="relative">
+                <i id="openCartBtn" class="fas fa-shopping-cart text-gray-600 text-2xl cursor-pointer hover:text-red-500 transition-colors"></i>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    0
+                </span>
+            </div>
+        </div>
+        
+        <nav class="flex justify-between items-center border-t border-b border-gray-200 py-2">
+            <div class="flex space-x-6">
+                <a href="index.html" class="text-gray-700 hover:text-blue-500 font-medium transition-colors">
+                    Home
+                </a>
+                <a href="about.html" class="text-gray-700 hover:text-blue-500 font-medium transition-colors">
+                    Tentang Kami
+                </a>
+                <a href="kontak.html" class="text-gray-700 hover:text-blue-500 font-medium transition-colors">
+                    Kontak Kami
+                </a>
+                </div>
+
+            <div class="w-full max-w-lg hidden md:block">
+                <div class="relative">
+                    <input id="search-input" type="text" placeholder="Cari produk..."
+                        class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
+            <div class="flex space-x-4">
+                <a href="#" class="text-sm text-gray-700 hover:text-blue-500 transition-colors font-medium">Masuk</a>
+                <a href="#" class="text-sm text-blue-500 hover:text-blue-700 transition-colors font-medium">Daftar</a>
+            </div>
+        </nav>
+
+        <div class="w-full mt-4 md:hidden">
+            <div class="relative">
+                <input id="search-input-mobile" type="text" placeholder="Cari produk..."
+                    class="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="container mx-auto px-4 mt-8">
+        <!-- Loader -->
+        <div id="loader" class="text-center py-10">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
+            <p class="mt-2 text-gray-600">Memuat produk...</p>
+        </div>
+
+
+        <!-- Product Grid -->
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Kartu produk akan dimasukkan di sini oleh JavaScript -->
+        </div>
+
+
+        <!-- Error Message -->
+        <div id="error-message" class="hidden text-center bg-red-100 text-red-700 p-4 rounded-lg">
+            <p>Gagal memuat produk. Silakan coba lagi nanti.</p>
+        </div>
+    </main>
+
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="p-4 sm:p-6">
+                <!-- Modal Header -->
+                <div class="flex justify-between items-center pb-3 border-b">
+                    <h3 class="text-xl font-semibold text-gray-900" id="modal-title">Detail Produk</h3>
+                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times fa-lg"></i>
+                    </button>
+                </div>
+                <!-- Modal Body -->
+                <div class="mt-4 md:flex md:space-x-6">
+                    <div class="md:w-1/2 flex-shrink-0">
+                        <img id="modal-image" src="https://placehold.co/400x400" alt="Product Image" class="w-full h-auto object-contain rounded-lg max-h-80">
+                    </div>
+                    <div class="mt-4 md:mt-0 md:w-1/2">
+                        <span id="modal-category" class="text-sm bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Kategori</span>
+                        <h4 class="text-2xl font-bold text-gray-800 my-2" id="modal-product-name">Nama Produk</h4>
+                        <p class="text-3xl font-light text-blue-600 mb-4" id="modal-price">Rp 0</p>
+                        <p class="text-gray-600 text-sm leading-relaxed" id="modal-description">Deskripsi produk akan muncul di sini.</p>
+                        <button id="modal-add-to-cart" class="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2">
+                            <i class="fas fa-cart-plus"></i>
+                            <span>Tambah ke Keranjang</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50"></div>
+    <!-- WhatsApp Notification Modal -->
+<div id="whatsappModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md">
+        <div class="p-6">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-xl font-semibold text-gray-900">Bagikan via WhatsApp</h3>
+                <button id="closeWhatsappModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="mt-4">
+                <p class="text-gray-600 mb-4">Pilih opsi untuk berbagi keranjang belanja:</p>
+                
+                <div class="space-y-3">
+                    <button id="whatsapp-cart-summary" class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center space-x-2">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Kirim Ringkasan Keranjang</span>
+                    </button>
+                    
+                    <button id="whatsapp-single-product" class="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center space-x-2">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>Bagikan Produk Ini</span>
+                    </button>
+                </div>
+                
+                <div class="mt-4 p-3 bg-gray-100 rounded-lg">
+                    <p class="text-sm text-gray-600">Nomor WhatsApp Tujuan:</p>
+                    <input type="text" id="whatsapp-number" placeholder="Contoh: (+62) 838-5034-4798" class="w-full mt-1 p-2 border border-gray-300 rounded text-sm" value="6281234567890">
+                    <p class="text-xs text-gray-500 mt-1">*Format: kode negara + nomor (tanpa + dan spasi)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Cart Detail Modal -->
+<div id="cartModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center pb-3 border-b">
+                <h3 class="text-xl font-semibold text-gray-900">Detail Keranjang Belanja</h3>
+                <button id="closeCartModalBtn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Cart Content -->
+            <div id="cart-content" class="mt-4">
+                <!-- Empty Cart State -->
+                <div id="empty-cart-message" class="text-center py-8">
+                    <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Keranjang belanja Anda masih kosong</p>
+                    <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Mulai Belanja
+                    </button>
+                </div>
+
+                <!-- Cart Items -->
+                <div id="cart-items" class="hidden">
+                    <div class="space-y-4">
+                        <!-- Cart items will be inserted here -->
+                    </div>
+                    
+                    <!-- Cart Summary -->
+                    <div id="cart-summary" class="mt-6 pt-4 border-t border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">Total Item:</span>
+                            <span id="cart-total-items" class="font-semibold">0</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">Subtotal:</span>
+                            <span id="cart-subtotal" class="font-semibold">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-gray-600">Total Harga:</span>
+                            <span id="cart-total-price" class="text-xl font-bold text-blue-600">Rp 0</span>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex space-x-3">
+                            <button id="clear-cart-btn" class="flex-1 bg-red-100 text-red-700 py-3 rounded-lg font-semibold hover:bg-red-200 transition-colors flex items-center justify-center space-x-2">
+                                <i class="fas fa-trash"></i>
+                                <span>Kosongkan Keranjang</span>
+                            </button>
+                            <button id="whatsapp-cart-btn" class="flex-1 bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center justify-center space-x-2">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>Share via WhatsApp</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Simple Footer with Basic Info -->
+    ...
+<div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2">
+        </div>
+
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-4 py-10 md:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                
+                <div class="lg:col-span-1">
+                    <h3 class="text-xl font-bold text-white mb-4">BOIBOI Marketplace</h3>
+                    <p class="text-gray-400 text-sm">
+                        Platform belanja online terpercaya untuk kebutuhan harian dan gaya hidup Anda. Kualitas terbaik, harga terjangkau.
+                    </p>
+                    <div class="mt-6">
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors mr-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors mr-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-blue-400 transition-colors"><i class="fab fa-twitter"></i></a>
+                    </div>
+                    <p class="text-gray-500 text-xs mt-6">
+                        &copy; 2024 All rights reserved.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4 border-b border-gray-700 pb-2">Informasi</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Tentang Kami</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition-colors">Karir</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4 border-b border-gray-700 pb-2">Kontak Kami</h4>
+                    <ul class="space-y-3 text-gray-400 text-sm">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-400 mr-3 mt-1"></i>
+                            <span>Jl. Binade, Gemaharjo, Pacitan, Indonesia</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt text-blue-400 mr-3"></i>
+                            <a href="tel:0211234567" class="hover:text-blue-400">(+62) 838-5034-4798</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-blue-400 mr-3"></i>
+                            <a href="mailto:support@boiboi.com" class="hover:text-blue-400">Jaiwo@gmail.com</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-whatsapp text-blue-400 mr-3"></i>
+                            <a href="https://wa.me/628123456789" target="_blank" class="hover:text-blue-400">(+62) 838-5034-4798</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-1">
+                    <h4 class="text-lg font-semibold text-white mb-4 border-b border-gray-700 pb-2">Lokasi Kami</h4>
+                    <div class="w-full h-40 bg-gray-700 rounded-lg overflow-hidden shadow-xl">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d493.989744884603!2d111.4617299562896!3d-7.90363972374378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e79755872e6a679%3A0xf5436fa1497937ea!2sPos%20Polisi%20Dengok!5e0!3m2!1sid!2sid!4v1760508157244!5m2!1sid!2sid" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="rounded-lg"
+                        ></iframe>
+                    </div>
+                    <p class="text-gray-500 text-xs mt-2">
+                        Klik peta untuk melihat detail di Google Maps.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js" defer></script>
+</body>
+</html>

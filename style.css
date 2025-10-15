@@ -1,0 +1,131 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+
+.product-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+
+/* Gaya untuk modal */
+#productModal {
+    transition: opacity 0.3s ease;
+}
+
+
+/* Animasi untuk notifikasi */
+@keyframes toast-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+.toast-notification {
+    animation: toast-in 0.5s ease-out forwards;
+}
+
+/* Animasi untuk modal */
+#whatsappModal {
+    transition: opacity 0.3s ease;
+}
+
+/* Hover effect untuk tombol WhatsApp */
+#whatsapp-cart-summary:hover, #whatsapp-single-product:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+}
+/* Animasi untuk modal keranjang */
+#cartModal {
+    transition: opacity 0.3s ease;
+}
+
+/* Hover effects untuk item keranjang */
+.cart-item:hover {
+    background-color: #f9fafb;
+}
+
+/* Custom scrollbar untuk modal keranjang */
+#cartModal ::-webkit-scrollbar {
+    width: 6px;
+}
+
+#cartModal ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#cartModal ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+#cartModal ::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Animasi untuk tombol quantity */
+.increase-quantity, .decrease-quantity {
+    transition: all 0.2s ease;
+}
+
+.increase-quantity:hover, .decrease-quantity:hover {
+    transform: scale(1.1);
+}
+
+.remove-item {
+    transition: color 0.2s ease;
+}
+/* Simple Footer Styles */
+footer {
+    margin-top: auto;
+}
+/* Search and Categories Styles */
+#categories-container {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+#categories-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+#categories-container::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 10px;
+}
+
+#categories-container::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+}
+
+#categories-container::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Search input focus effect */
+#search-input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Smooth transition for category buttons */
+.category-btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.category-btn:hover {
+    transform: translateY(-1px);
+}
